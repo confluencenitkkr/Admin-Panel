@@ -4,6 +4,8 @@ import postActions from "../../actions/postActions";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
+import ReactQuill from "react-quill"
+import "react-quill/dist/quill.snow.css"
 const FormPost = (props) => {
   const [image, setImage] = useState("");
   const [venue, setVenue] = useState("");
@@ -18,7 +20,7 @@ const FormPost = (props) => {
   const [EventName,setEventName]=useState("");
   const [rule, setRule] = useState("");
   const [time, setTime] = useState("");
-
+  const [url,setUrl]=useState("");
   useEffect(() => {
     setStateOption(optionMaker(data.data));
   }, []);
@@ -26,7 +28,41 @@ const FormPost = (props) => {
   const handleChange = (newValue, actionMeta) => {
     setClub(newValue.label);
   };
- 
+  const objectToFormData = function (obj, form, namespace) {
+
+    let fd = form || new FormData();
+    let formKey;
+  
+    for (let property in obj) {
+      if (obj.hasOwnProperty(property)) {
+  
+        if (namespace) {
+          formKey = namespace + '[' + property + ']';
+        } else {
+          formKey = property;
+        }
+  
+        // if the property is an object, but not a File,
+        // use recursivity.
+        if (typeof obj[property] === 'object' && !(obj[property] instanceof Blob) && !(obj[property] instanceof File) && !(obj[property] instanceof Array)) {
+          objectToFormData(obj[property], fd, property);
+  
+        } else if (obj[property] instanceof Array) {
+          // if it's a array
+          for (var i = 0; i < obj[property].length; i++) {
+              // formData.append('array_php_side[]', obj[property][i]);
+              fd.append(formKey + '[]', obj[property][i]);
+          }
+        
+        } else {
+          // if it's a string or a File object or blob
+          fd.append(formKey, obj[property]);
+        }
+  
+      }
+    }
+    return fd
+  }
 
   const optionMaker = (arr) => {
     let data = [];
@@ -38,7 +74,30 @@ const FormPost = (props) => {
     });
     return data;
   };
+  const uploadImage = (datkka) => {
+    props.setLoading(true);
 
+    const data = new FormData()
+    data.append("file", datkka)
+    data.append("upload_preset", "nksvhda8")
+    data.append("cloud_name","dryfxhged")
+    fetch("  https://api.cloudinary.com/v1_1/dryfxhged/image/upload",{
+    method:"post",
+    body: data
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      console.log(data,"data");
+    setUrl(data.url)
+    props.setLoading(false);
+
+    })
+    .catch(err => console.log(err))
+    toast.warning("TRY again")
+
+    props.setLoading(false);
+    }
+    
   const sendform = () => {
     
   
@@ -81,7 +140,7 @@ const FormPost = (props) => {
       cooridnatorNumber: number,
       cooridnatorName2 : businessName2 ? businessName2:"",
       cooridnatorNumber2: number2? number2 :"",
-      image: image,
+      image: url,
       venue: venue,
       description: information,
       date: date,
@@ -171,15 +230,15 @@ const FormPost = (props) => {
           </div>
           <div class="col-lg-12">
             <div class="">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="image URl "
-                onChange={(e) => {
-                  setImage(e.target.value);
-                }}
-                required
-              />
+            <input
+            placeholder="image"
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={(e)=>{
+                e.preventDefault();
+                uploadImage(e.target.files[0]);
+              }}
+                        />
             </div>
           </div>
         </div>
@@ -287,7 +346,7 @@ const FormPost = (props) => {
         
           <div class="col-lg-12">
             <div>
-              <textarea
+              <ReactQuill
                 class="form-control"
                 name=""
                 id=""
@@ -297,12 +356,12 @@ const FormPost = (props) => {
                 onChange={(e) => {
                   setInformation(e.target.value);
                 }}
-              ></textarea>
+              />
             </div>
           </div>
           <div class="col-lg-12">
             <div>
-              <textarea
+              <ReactQuill
                 class="form-control"
                 name=""
                 id=""
@@ -312,7 +371,7 @@ const FormPost = (props) => {
                 onChange={(e) => {
                   setRule(e.target.value);
                 }}
-              ></textarea>
+              />
             </div>
           </div>
           <div class="col-lg-12">

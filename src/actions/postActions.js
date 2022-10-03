@@ -12,7 +12,15 @@ function getPost(payload, cb) {
       if (typeof cb === 'function') return cb(error, res && res.body);
     });
 }
-
+function uploadImage(payload, cb) {
+  Agent
+    .fire('post', `${BACKEND_URL}/upload/uploadFileAwsS3`)
+    .send(payload)
+    .end((err, res) => {
+      var error = err || res.error ? ServerError(res) : (res.body && res.body.error) ? ServerError(res) : null;
+      if (typeof cb === 'function') return cb(error, res && res.body);
+    });
+}
 function editPost(payload, id, cb) {
   Agent
     .fire('post', `${BACKEND_URL}/users/editPost/${id}`)
@@ -77,5 +85,6 @@ export default {
   deletePost,
   repost,
   myPost,
-  Search
+  Search,
+  uploadImage
 }

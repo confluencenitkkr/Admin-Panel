@@ -4,6 +4,7 @@ import './App.css';
 import { auth } from "./firebase";
 import {useNavigate} from 'react-router-dom'
 import Dashboard from './components/dashboard';
+import Login from "./components/login";
 
 function App() {
  
@@ -16,6 +17,8 @@ function App() {
             <Routes>
               
                <Route exact path="/" key="userdashboard" element={<Dashboard />}/>
+               <Route exact path="/login" key="login" element={<Login />}/>
+
                <Route path="*" element={<Navigate to="/" />} />
               </Routes>
         

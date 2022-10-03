@@ -19,7 +19,7 @@ import FormPost from "../formjobs";
 import Loader from "../loader";
 
 import Other from "../../components/assets/industry/Other.png";
-
+import Agent from "../../actions/superAgent";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import convertRegion from "../../usaStatesAbbrevations";
@@ -29,6 +29,14 @@ const Dashborad = (props) => {
   const [postList, setList] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(false);
+  useEffect(async () => {
+    let token=await Agent.getToken();
+    console.log(token,"token")
+
+    if (token!="confluence2022") {
+      history("/login");
+    }
+  }, [])   
   useEffect(() => {
     fetchPost();
   }, [searchText]);
@@ -207,11 +215,21 @@ const Dashborad = (props) => {
                               cooridnatorNumber:{" +91 "}
                                   {job.cooridnatorNumber}{"/ " }{job.cooridnatorNumber2}<br/>
                                 rule:<br/>
-                                  {job.rule}<br/>
+                                <p
+                                  dangerouslySetInnerHTML={{
+                                    __html: job.rule,
+                                  }}
+                                ></p>
+                                  <br/>
                                   description:<br/>
-                                  {job.description}
+                                  <p
+                                  dangerouslySetInnerHTML={{
+                                    __html: job.description,
+                                  }}
+                                ></p>
 
                                  </p>
+                                 
                               </div>
                               <div class="acc-contact-details">
                                 <ul class="">
