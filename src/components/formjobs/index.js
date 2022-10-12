@@ -92,15 +92,21 @@ const FormPost = (props) => {
     props.setLoading(false);
 
     })
-    .catch(err => console.log(err))
-    toast.warning("TRY again")
-
-    props.setLoading(false);
+    .catch(err => {
+      console.log(err)
+      toast.warning("TRY again")
+      props.setLoading(false);
+    })
+  
     }
     
   const sendform = () => {
     
   
+    if(!url){
+      toast.warning("Upload Image")
+      return
+    }
     if(!venue){
        toast.warning("ENTER venue")
        return
@@ -121,6 +127,7 @@ const FormPost = (props) => {
       toast.warning("ENTER NUMBER")
       return
     }
+ 
 
     if (
       !venue &&
@@ -162,6 +169,12 @@ const FormPost = (props) => {
       }
     });
   };
+  const setinfo = (value) => {
+    setInformation(value)
+  }
+  const setinfo2 = (value) => {
+    setRule(value)
+  }
 
   return (
     <div class="post-job-content">
@@ -352,25 +365,22 @@ const FormPost = (props) => {
                 id=""
                 cols="30"
                 rows="4"
-                placeholder="Additional Information"
-                onChange={(e) => {
-                  setInformation(e.target.value);
-                }}
+                placeholder="Additional Description"
+                onChange={setinfo}
+
               />
             </div>
           </div>
           <div class="col-lg-12">
             <div>
-              <ReactQuill
+              <ReactQuill 
                 class="form-control"
                 name=""
                 id=""
                 cols="30"
                 rows="4"
                 placeholder="Rule of Events"
-                onChange={(e) => {
-                  setRule(e.target.value);
-                }}
+                onChange={setinfo2}
               />
             </div>
           </div>
