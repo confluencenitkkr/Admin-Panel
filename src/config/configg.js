@@ -1,6 +1,7 @@
 const settings = {
+  // BACKEND_URL: 'http://localhost:4044',
 
-    // BACKEND_URL: 'http://localhost:4044',
+  // BACKEND_URL: 'https://api.nearus.co',
 
     // BACKEND_URL: 'https://api.nearus.co',
 
