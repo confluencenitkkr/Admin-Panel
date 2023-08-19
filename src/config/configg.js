@@ -6,7 +6,7 @@ const settings = {
 
 
     // dev
-    BACKEND_URL: 'https://nitkkr.herokuapp.com'
+    BACKEND_URL: 'https://confluence-backend.onrender.com/'
 
 }
 
