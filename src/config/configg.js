@@ -7,7 +7,7 @@ const settings = {
 
 
     // dev
-    BACKEND_URL: 'https://confluence-backend.onrender.com/'
+    BACKEND_URL: 'https://confluence-backend.onrender.com'
 
 }
 

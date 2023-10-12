@@ -13,8 +13,8 @@ function Login() {
   
    const submit=(data)=>{
    console.log(userName,password);
-    if(userName=="confluence2022"){
-        if(password=="photog2022")
+    if(userName=="confluence2023"){
+        if(password=="photog2023")
         cookie.set("x-access-token-ns",userName);
     }
     history("/");
